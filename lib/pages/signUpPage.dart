@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:herewego/Services/authservise.dart';
+import 'package:herewego/pages/home_page.dart';
 import 'package:herewego/pages/signInPage.dart';
 class SignUpPage extends StatefulWidget {
   static final String id ="signup_page";
@@ -15,6 +18,20 @@ class _SignUpPageState extends State<SignUpPage> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
 
+ void _doSignUp(){
+  String fullname = fullnameController.text.toString();
+  String email = fullnameController.text.toString();
+  String password = fullnameController.text.toString();
+
+
+  if(fullname.isEmpty || email.isEmpty || password.isEmpty) return;
+  AuthService.signUpUser(fullname, email, password).then((value) => (){
+    responseSignUp(value!);
+  });
+}
+  void responseSignUp (User firebaseuser){
+    Navigator.pushReplacementNamed(context, HomePage.id);
+  }
 
 
   @override
@@ -30,7 +47,7 @@ class _SignUpPageState extends State<SignUpPage> {
             TextField(
               controller: fullnameController,
               decoration: InputDecoration(
-                hintText: "Email",
+                hintText: "Fullname",
               ),
             ),
             SizedBox(height: 10,),
@@ -51,6 +68,10 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             SizedBox(height: 15,),
             GestureDetector(
+              onTap: (){
+                _doSignUp();
+                Navigator.pushReplacementNamed(context, HomePage.id);
+              },
               child: Container(
                 alignment: Alignment.center,
                 height: 50,

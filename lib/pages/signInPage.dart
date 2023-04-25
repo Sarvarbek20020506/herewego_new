@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:herewego/Services/authservise.dart';
 import 'package:herewego/pages/home_page.dart';
 import 'package:herewego/pages/signUpPage.dart';
 class SignInPage extends StatefulWidget {
@@ -18,6 +20,11 @@ _doSignIn(){
   String email = emailController.text.toString();
   String password = passwordController.text.toString();
   if(email.isEmpty || password.isEmpty) return;
+  AuthService.signInUser(email, password).then((value) => {
+    responseResut(value!),
+  });
+}
+void responseResut(value){
   Navigator.pushReplacementNamed(context, HomePage.id);
 }
 
@@ -45,6 +52,9 @@ _doSignIn(){
             ),
             SizedBox(height: 15,),
             GestureDetector(
+              onTap: (){
+                _doSignIn();
+              },
               child: Container(
                 alignment: Alignment.center,
                 height: 50,
